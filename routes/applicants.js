@@ -13,6 +13,16 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+// GET all applicants for a specific job
+router.get("/job/:jobId", async (req, res) => {
+  try {
+    const applicants = await Applicant.find({ jobId: req.params.jobId });
+    res.json(applicants);
+  } catch (err) {
+    console.error("Error fetching applicants for job:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 // GET a single applicant by ID
 router.get("/:id", async (req, res) => {
@@ -26,16 +36,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// GET all applicants for a specific job
-router.get("/job/:jobId", async (req, res) => {
-  try {
-    const applicants = await Applicant.find({ jobId: req.params.jobId });
-    res.json(applicants);
-  } catch (err) {
-    console.error("Error fetching applicants for job:", err);
-    res.status(500).json({ message: "Server error" });
-  }
-});
 
 // Update status of an applicant
 router.put("/:id/status", async (req, res) => {
