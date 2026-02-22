@@ -37,32 +37,29 @@ router.get("/job/:jobId", async (req, res) => {
   }
 });
 
-// Update applicant status
+// Update status of an applicant
 router.put("/:id/status", async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-
-  if (!["applied", "reviewing", "interview", "hired", "rejected"].includes(status)) {
-    return res.status(400).json({ message: "Invalid status" });
-  }
-
   try {
-    const applicant = await Applicant.findByIdAndUpdate(
-      id,
+    const applicantId = req.params.id;
+    const { status } = req.body; // new status sent from frontend
+
+    const updatedApplicant = await Applicant.findByIdAndUpdate(
+      applicantId,
       { status },
-      { new: true } // return the updated document
+      { new: true }
     );
 
-    if (!applicant) {
+    if (!updatedApplicant) {
       return res.status(404).json({ message: "Applicant not found" });
     }
 
-    res.json(applicant);
-  } catch (err) {
-    console.error(err);
+    res.json(updatedApplicant);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 
 
