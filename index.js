@@ -10,7 +10,14 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// CORS configuration for production
+app.use(
+  cors({
+    origin: "https://job-portal-frontend-five-gamma.vercel.app", // your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/jobs", jobRoutes);
